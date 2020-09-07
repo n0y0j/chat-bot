@@ -1,7 +1,11 @@
-import React from "react";
-import Axios from "axios";
+import React, { useEffect } from "react";
+import axios from "axios";
 
 function ChatBot() {
+  useEffect(() => {
+    eventQuery("welcomeMyWebsite");
+  }, []);
+
   const textQuery = async (text) => {
     let conversation = {
       who: "user",
@@ -18,8 +22,8 @@ function ChatBot() {
 
     try {
       // server의 textQuery에게 text를 보내주고 그에 대한 응답을 받아옴
-      const response = await Axios.post(
-        "api/dialogflow/textQuery",
+      const response = await axios.post(
+        "http://localhost:5000/api/dialogflow/textQuery",
         textQueryVariables
       );
 
@@ -30,6 +34,8 @@ function ChatBot() {
         who: "bot",
         content: content,
       };
+
+      console.log(conversation);
     } catch (error) {
       conversation = {
         who: "bot",
@@ -39,6 +45,39 @@ function ChatBot() {
           },
         },
       };
+    }
+  };
+
+  const eventQuery = async (event) => {
+    let eventQueryVariables = {
+      event: event,
+    };
+
+    try {
+      // server의 textQuery에게 text를 보내주고 그에 대한 응답을 받아옴
+      const response = await axios.post(
+        "http://localhost:5000/api/dialogflow/eventQuery",
+        eventQueryVariables
+      );
+
+      // textQuery에서 가져온 response 객체의 json 값 저장
+      const content = response.data.fulfillmentMessages[0];
+
+      let conversation = {
+        who: "bot",
+        content: content,
+      };
+      console.log(conversation);
+    } catch (error) {
+      let conversation = {
+        who: "bot",
+        content: {
+          text: {
+            text: " Error just occured, please check the problem",
+          },
+        },
+      };
+      console.log(conversation);
     }
   };
 
