@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "backend": "nodemon ./bin/www"
   },
   "dependencies": {
     "actions-on-google": "^2.6.0",
@@ -17,5 +18,9 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "mongoose": "^5.4.2"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10"
   }
 }
