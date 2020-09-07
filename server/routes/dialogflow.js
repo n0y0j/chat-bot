@@ -31,8 +31,6 @@ router.post("/textQuery", async (req, res) => {
     },
   };
 
-  console.log(req.body.text);
-
   // responses는 client로 보낼 chatbot의 반응을 담고 있음, 즉, responses를 다시 client로 보내야함
   const responses = await sessionClient.detectIntent(request);
   console.log("Detected intent");
@@ -41,6 +39,28 @@ router.post("/textQuery", async (req, res) => {
   console.log(`  Response: ${result.fulfillmentText}`);
 
   // client로 챗봇의 반응을 다시 보내줌
+  res.send(result);
+});
+
+// eventQuery
+// dialogflow의 intent에서 정의한 이벤트를 호출함
+router.post("/eventQuery", async (req, res) => {
+  const request = {
+    session: sessionPath,
+    queryInput: {
+      event: {
+        name: req.body.event,
+        languageCode: languageCode,
+      },
+    },
+  };
+
+  const responses = await sessionClient.detectIntent(request);
+  console.log("Detected intent");
+  const result = responses[0].queryResult;
+  console.log(`  Query: ${result.queryText}`);
+  console.log(`  Response: ${result.fulfillmentText}`);
+
   res.send(result);
 });
 
