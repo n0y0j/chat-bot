@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { saveMessage } from "../actions/message_action";
 
 function ChatBot() {
+  const dispatch = useDispatch();
   useEffect(() => {
     eventQuery("welcomeMyWebsite");
   }, []);
@@ -16,6 +19,7 @@ function ChatBot() {
       },
     };
 
+    dispatch(saveMessage(conversation));
     let textQueryVariables = {
       text: text,
     };
@@ -34,8 +38,7 @@ function ChatBot() {
         who: "bot",
         content: content,
       };
-
-      console.log(conversation);
+      dispatch(saveMessage(conversation));
     } catch (error) {
       conversation = {
         who: "bot",
@@ -45,6 +48,7 @@ function ChatBot() {
           },
         },
       };
+      dispatch(saveMessage(conversation));
     }
   };
 
@@ -67,7 +71,7 @@ function ChatBot() {
         who: "bot",
         content: content,
       };
-      console.log(conversation);
+      dispatch(saveMessage(conversation));
     } catch (error) {
       let conversation = {
         who: "bot",
@@ -77,7 +81,7 @@ function ChatBot() {
           },
         },
       };
-      console.log(conversation);
+      dispatch(saveMessage(conversation));
     }
   };
 
