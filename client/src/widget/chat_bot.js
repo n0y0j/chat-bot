@@ -2,9 +2,14 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../actions/message_action";
+import Message from "./sections/message";
 
 function ChatBot() {
   const dispatch = useDispatch();
+
+  // redux에 store되있는 정보를 꺼내 사용할 수 있음
+  const messagesFromRedux = useSelector((state) => state.message.messages);
+
   useEffect(() => {
     eventQuery("welcomeMyWebsite");
   }, []);
@@ -38,6 +43,7 @@ function ChatBot() {
         who: "bot",
         content: content,
       };
+
       dispatch(saveMessage(conversation));
     } catch (error) {
       conversation = {
@@ -71,6 +77,7 @@ function ChatBot() {
         who: "bot",
         content: content,
       };
+
       dispatch(saveMessage(conversation));
     } catch (error) {
       let conversation = {
@@ -96,6 +103,25 @@ function ChatBot() {
     }
   };
 
+  const renderOneMessage = (message, i) => {
+    console.log("message", message);
+
+    return (
+      <Message key={i} who={message.who} text={message.content.text.text} />
+    );
+  };
+
+  // redux안에 있는 정보들을 하나씩 처리한다,
+  const renderMessage = (returnedMessages) => {
+    if (returnedMessages) {
+      return returnedMessages.map((message, i) => {
+        return renderOneMessage(message, i);
+      });
+    } else {
+      return null;
+    }
+  };
+
   return (
     <div
       style={{
@@ -105,7 +131,9 @@ function ChatBot() {
         borderRadius: "7px",
       }}
     >
-      <div style={{ height: 644, width: "100%", overflow: "auto" }}></div>
+      <div style={{ height: 644, width: "100%", overflow: "auto" }}>
+        {renderMessage(messagesFromRedux)}
+      </div>
 
       <input
         style={{

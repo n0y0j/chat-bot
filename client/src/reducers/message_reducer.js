@@ -6,8 +6,8 @@ export default function (state = { messages: [] }, action) {
     case SAVE_MESSAGE:
       return {
         ...state,
-        // messages 데이터를 redux store에 추가함
         messages: state.messages.concat(action.payload),
+        // messages 데이터를 redux store에 추가함
       };
     default:
       return state;
