@@ -3,6 +3,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../actions/message_action";
 import Message from "./sections/message";
+import Card from "./sections/card";
+import { List, Avatar, Icon, Item } from "antd";
 
 function ChatBot() {
   const dispatch = useDispatch();
@@ -37,14 +39,14 @@ function ChatBot() {
       );
 
       // textQuery에서 가져온 response 객체의 json 값 저장
-      const content = response.data.fulfillmentMessages[0];
+      for (let content of response.data.fulfillmentMessages) {
+        conversation = {
+          who: "bot",
+          content: content,
+        };
 
-      conversation = {
-        who: "bot",
-        content: content,
-      };
-
-      dispatch(saveMessage(conversation));
+        dispatch(saveMessage(conversation));
+      }
     } catch (error) {
       conversation = {
         who: "bot",
@@ -71,14 +73,14 @@ function ChatBot() {
       );
 
       // textQuery에서 가져온 response 객체의 json 값 저장
-      const content = response.data.fulfillmentMessages[0];
+      for (let content of response.data.fulfillmentMessages) {
+        let conversation = {
+          who: "bot",
+          content: content,
+        };
 
-      let conversation = {
-        who: "bot",
-        content: content,
-      };
-
-      dispatch(saveMessage(conversation));
+        dispatch(saveMessage(conversation));
+      }
     } catch (error) {
       let conversation = {
         who: "bot",
@@ -103,12 +105,35 @@ function ChatBot() {
     }
   };
 
+  const rendersCards = (cards) => {
+    return cards.map((card, i) => <Card key={i} cardInfo={card.structValue} />);
+  };
+
   const renderOneMessage = (message, i) => {
     console.log("message", message);
 
-    return (
-      <Message key={i} who={message.who} text={message.content.text.text} />
-    );
+    if (message.content && message.content.text && message.content.text.text) {
+      return (
+        <Message key={i} who={message.who} text={message.content.text.text} />
+      );
+    } else if (message.content && message.content.payload.fields.card) {
+      const AvatarSrc =
+        message.who === "bot" ? <Icon type="robot" /> : <Icon type="smile" />;
+
+      return (
+        <div>
+          <List.Item style={{ padding: "1rem" }}>
+            <List.Item.Meta
+              avatar={<Avatar icon={AvatarSrc} />}
+              title={message.who}
+              description={rendersCards(
+                message.content.payload.fields.card.listValue.values
+              )}
+            />
+          </List.Item>
+        </div>
+      );
+    }
   };
 
   // redux안에 있는 정보들을 하나씩 처리한다,
