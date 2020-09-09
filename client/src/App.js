@@ -1,23 +1,14 @@
 import React from "react";
-import { Typography, Icon } from "antd";
-import ChatBot from "./widget/chat_bot";
-const { Title } = Typography;
+import { Route, Switch } from "react-router-dom";
+import LoginPage from "./pages/login_page";
+import ChatBotPage from "./pages/chatbot_page";
 
 function App() {
   return (
-    <div>
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
-      >
-        <Title level={2}>
-          CHAT BOT APP&nbsp;
-          <Icon type="robot" />
-        </Title>
-      </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <ChatBot />
-      </div>
-    </div>
+    <Switch>
+      <Route exact path="/" component={LoginPage} />
+      <Route exact path="/chatbot" component={ChatBotPage} />
+    </Switch>
   );
 }
 

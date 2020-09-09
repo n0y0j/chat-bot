@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../actions/message_action";
 import Message from "./sections/message";
 import Card from "./sections/card";
-import { List, Avatar, Icon, Item } from "antd";
+import { List, Avatar, Icon } from "antd";
 
 function ChatBot() {
   const dispatch = useDispatch();
