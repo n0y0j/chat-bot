@@ -3,7 +3,7 @@ import { Typography, Icon } from "antd";
 import ChatBot from "../widget/chat_bot";
 const { Title } = Typography;
 
-function ChatBotPage() {
+function ChatBotPage(props) {
   return (
     <div>
       <div

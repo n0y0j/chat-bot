@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -9,6 +9,8 @@ import { Typography, Icon } from "antd";
 const { Title } = Typography;
 
 function LoginPage() {
+  const [userName, setUserName] = useState("");
+
   const useStyles = makeStyles((theme) => ({
     login_div: {},
     text_field: {
@@ -20,50 +22,73 @@ function LoginPage() {
     },
   }));
 
+  const userNameChange = (e) => {
+    setUserName(e.target.value);
+  };
+
   const history = useHistory();
   const moveChatBot = () => {
-    history.push("/chatbot");
+    history.push("/chatbot", userName);
   };
 
   const classes = useStyles();
   return (
     <Grid
       container
-      direction="column"
+      direction="row"
       justify="flex-start"
       alignItems="center"
-      style={{ marginTop: "5%" }}
+      style={{ marginTop: "7%", marginLeft: "18%" }}
     >
-      <Title
-        style={{
-          fontSize: "70px",
-          marginBottom: "60px",
-          fontFamily: "BM_JUA",
-          letterSpacing: "10px",
-        }}
-      >
-        챗봇을 이용하고 싶다고?
-      </Title>
+      <div direction="column">
+        <Title
+          style={{
+            fontSize: "70px",
+            marginBottom: "-30px",
+            fontFamily: "BM_JUA",
+            letterSpacing: "10px",
+          }}
+        >
+          챗봇을 이용하고 싶다고?
+        </Title>
+        <Title
+          style={{
+            fontSize: "70px",
+            fontFamily: "BM_JUA",
+            letterSpacing: "10px",
+          }}
+        >
+          닉네임을 입력해
+        </Title>
+        <div direction="row">
+          <TextField
+            className={classes.text_field}
+            variant="outlined"
+            style={{ marginTop: "-20px" }}
+            onChange={userNameChange}
+          />
+          <Button
+            onClick={moveChatBot}
+            style={{
+              fontSize: "30px",
+              marginLeft: "30px",
+              marginTop: "-27px",
+              fontFamily: "BM_JUA",
+            }}
+          >
+            저장
+          </Button>
+        </div>
+      </div>
       <Icon
         type="robot"
-        style={{ fontSize: "200px", marginBottom: "-20px", color: "#00BFFF" }}
-      />
-      <Title
         style={{
-          fontSize: "70px",
-          fontFamily: "BM_JUA",
-          letterSpacing: "10px",
+          fontSize: "350px",
+          marginLeft: "300px",
+          color: "#00BFFF",
+          paddingTop: "150px",
         }}
-      >
-        닉네임을 입력해
-      </Title>
-      <TextField className={classes.text_field} variant="outlined" />
-      <Button
-        onClick={moveChatBot}
-        style={{ fontSize: "30px", marginTop: "40px", fontFamily: "BM_JUA" }}
-      >
-        저장
-      </Button>
+      />
     </Grid>
   );
 }
