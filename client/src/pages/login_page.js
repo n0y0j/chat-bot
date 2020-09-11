@@ -12,7 +12,6 @@ function LoginPage() {
   const [userName, setUserName] = useState("");
 
   const useStyles = makeStyles((theme) => ({
-    login_div: {},
     text_field: {
       "& .MuiOutlinedInput-root": {
         "& fieldset": {
@@ -38,7 +37,7 @@ function LoginPage() {
       direction="row"
       justify="flex-start"
       alignItems="center"
-      style={{ marginTop: "7%", marginLeft: "18%" }}
+      style={{ marginTop: "8%", marginLeft: "18%" }}
     >
       <div direction="column">
         <Title

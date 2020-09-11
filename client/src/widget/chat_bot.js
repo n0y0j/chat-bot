@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../actions/message_action";
 import Message from "./sections/message";
 import Card from "./sections/card";
 import { List, Avatar, Icon } from "antd";
+import Grid from "@material-ui/core/Grid";
 
-function ChatBot() {
+function ChatBot(props) {
+  const [user, setUser] = useState(props.user);
   const dispatch = useDispatch();
 
   // redux에 store되있는 정보를 꺼내 사용할 수 있음
@@ -18,7 +20,7 @@ function ChatBot() {
 
   const textQuery = async (text) => {
     let conversation = {
-      who: "user",
+      who: user,
       content: {
         text: {
           text: text,
@@ -148,32 +150,51 @@ function ChatBot() {
   };
 
   return (
-    <div
+    <Grid
       style={{
-        height: 700,
-        width: 700,
-        border: "3px solid black",
-        borderRadius: "7px",
+        height: 900,
+        width: 800,
+        borderRadius: "10px",
+        backgroundColor: "#81F7F3",
       }}
     >
-      <div style={{ height: 644, width: "100%", overflow: "auto" }}>
-        {renderMessage(messagesFromRedux)}
+      <div
+        style={{
+          display: "flex",
+          width: 800,
+          textAlign: "center",
+          marginTop: "10px",
+          justifyContent: "center",
+        }}
+      >
+        <p
+          style={{
+            borderRadius: "8px",
+            fontSize: "30px",
+            fontFamily: "BM_JUA",
+            backgroundColor: "#FFFFFF",
+          }}
+        >
+          {user}님이 입장하셨습니다
+        </p>
       </div>
+      <Grid style={{ height: 744, width: 800, overflow: "auto" }}>
+        {renderMessage(messagesFromRedux)}
+      </Grid>
 
       <input
         style={{
-          margin: 0,
-          width: "100%",
+          width: 788,
           height: 50,
           borderRadius: "4px",
           padding: "5px",
           fontSize: "1rem",
         }}
-        placeholder="Send a messsage..."
+        placeholder="Send a Message..."
         onKeyPress={KeyPressHandler}
         type="text"
       />
-    </div>
+    </Grid>
   );
 }
 
